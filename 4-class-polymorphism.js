@@ -1,144 +1,167 @@
 /*
-  Challenge #4 - Class Polymorphism
+  Simple Shape Polymorphism Exercise
   
-  Notes:
-  - Run your code in browser console or Node.js
-  - Implement all required methods in each class
-  - Use proper validation for all inputs
-  - Handle floating point precision carefully
-  - Maintain proper inheritance chains
+  Instructions:
+  - Implement the missing code in each class
+  - Run the tests to verify your implementation
+  - Make sure to handle all error cases
+  - Use proper validation for inputs
 */
 
 // Abstract base class
 class Shape {
     constructor() {
-      if (this.constructor === Shape) {
-        throw new Error("Cannot instantiate abstract Shape class");
-      }
+        if (this.constructor === Shape) {
+            throw new Error("Cannot create shape directly!")
+        }
     }
-  
+
     getArea() {
-      throw new Error("getArea() must be implemented");
+        throw new Error("getArea() must be implemented!")
     }
-  
-    getPerimeter() {
-      throw new Error("getPerimeter() must be implemented");
-    }
-  
+
     toString() {
-      throw new Error("toString() must be implemented");
+        throw new Error("toString() must be implemented!")
     }
-  
-    scale(factor) {
-      throw new Error("scale() must be implemented");
-    }
-  
-    equals(shape) {
-      throw new Error("equals() must be implemented");
-    }
-  }
-  
-  // Basic shapes
-  class Circle extends Shape {
+}
+
+// Circle implementation
+class Circle extends Shape {
     constructor(radius) {
-      // Your code here
+        super();
+        if (radius <= 0) {
+            throw new Error("Radius must be positive!")
+        }
+        this.radius = radius;
     }
-  }
-  
-  class Rectangle extends Shape {
-    constructor(width, height) {
-      // Your code here
+
+    getArea() {
+        const area = Math.PI * this.radius * this.radius;
+        return area;
     }
-  }
-  
-  class Triangle extends Shape {
-    constructor(side1, side2, side3) {
-      // Your code here
-    }
-  }
-  
-  // Complex shapes
-  class Square extends Rectangle {
-    constructor(side) {
-      // Your code here
-    }
-  }
-  
-  class RegularPolygon extends Shape {
-    constructor(sides, sideLength) {
-      // Your code here
-    }
-  }
-  
-  // Shape factory
-  class ShapeFactory {
-    static createCircle(radius) {
-      // Your code here
-    }
-  
-    static createRectangle(width, height) {
-      // Your code here
-    }
-  
-    static createSquare(side) {
-      // Your code here
-    }
-  
-    static createTriangle(side1, side2, side3) {
-      // Your code here
-    }
-  
-    static createRegularPolygon(sides, sideLength) {
-      // Your code here
-    }
-  }
-  
-  // Shape container
-  class ShapeCollection {
-    constructor() {
-      this.shapes = [];
-    }
-  
-    addShape(shape) {
-      // Your code here
-    }
-  
-    getTotalArea() {
-      // Your code here
-    }
-  
-    getTotalPerimeter() {
-      // Your code here
-    }
-  
-    getShapesByType(type) {
-      // Your code here
-    }
-  
-    scaleAllShapes(factor) {
-      // Your code here
-    }
-  
+
     toString() {
-      // Your code here
+        return `Circle with radius ${this.radius}`
     }
-  }
-  
-  // Test cases
-  try {
-    console.log('Test Case 1: Creating Shapes');
-    const circle = ShapeFactory.createCircle(5);
-    const rectangle = ShapeFactory.createRectangle(4, 6);
-    const square = ShapeFactory.createSquare(4);
-    
-    console.log(circle.toString() === "Circle[radius=5]"); // Should print: true
-    console.log(rectangle.toString() === "Rectangle[width=4, height=6]"); // Should print: true
-    console.log(square.toString() === "Square[side=4]"); // Should print: true
-  
-    // Add more test cases from the markdown here
-    // ...
-  
-    console.log('All test cases passed!');
-  } catch (error) {
-    console.error('Test failed:', error.message);
-  }
+}
+
+// Rectangle implementation
+class Rectangle extends Shape {
+    constructor(width, height) {
+        super();
+        if (width <= 0 || height <= 0) {
+            throw new Error("Width and height must be positive number!");
+        }
+        this.width = width;
+        this.height = height;
+    }
+
+    getArea() {
+        const area = this.width * this.height;
+        return area;
+    }
+
+    toString() {
+        return `Rectangle with width ${this.width} and height ${this.height}`
+    }
+}
+
+// Square implementation (extends Rectangle)
+class Square extends Rectangle {
+    constructor(side) {
+        super(side, side)
+    }
+
+    toString() {
+        return `Square with side ${this.width}`;
+    }
+}
+
+// Shape collection
+class ShapeCollection {
+    constructor() {
+        this.shapes = [];
+    }
+
+    addShape(shape) {
+        if (!(shape instanceof Shape)) {
+            throw new Error("Can only add shapes!");
+        } else {
+            this.shapes.push(shape);
+        }
+    }
+
+    getTotalArea() {
+        return this.shapes.reduce((total, shape) => {
+            return total + shape.getArea();
+        }, 0)
+    }
+    // This is equivalent to writing:
+    /*
+    let total = 0;  // Initial value
+    for(let shape of this.shapes) {
+        total = total + shape.getArea();
+    }
+    return total;
+    */
+
+    printShapes() {
+        this.shapes.forEach(shape => {
+            console.log(shape.toString());
+        })
+    }
+    /*
+   for(let shape of this.shapes) {
+       console.log(shape.toString());
+   }
+   */
+}
+
+// Test cases
+try {
+    // Create shapes
+    const circle = new Circle(5);
+    const rectangle = new Rectangle(4, 6);
+    const square = new Square(3);
+
+    // Test toString() output
+    console.log(circle.toString());    // Should print: "Circle with radius 5"
+    console.log(rectangle.toString()); // Should print: "Rectangle with width 4 and height 6"
+    console.log(square.toString());    // Should print: "Square with side 3"
+
+    // Test areas
+    console.log(circle.getArea());    // Should print: ~78.54 (π * 5 * 5)
+    console.log(rectangle.getArea()); // Should print: 24 (4 * 6)
+    console.log(square.getArea());    // Should print: 9 (3 * 3)
+
+    // Test collection
+    const collection = new ShapeCollection();
+    collection.addShape(circle);
+    collection.addShape(rectangle);
+    collection.addShape(square);
+
+    console.log("Total area: " + collection.getTotalArea());
+    collection.printShapes();
+
+    // Error case tests
+    try {
+        new Shape(); // Should throw error
+    } catch (e) {
+        console.log("Error test 1:", e.message);
+    }
+
+    try {
+        new Circle(-5); // Should throw error
+    } catch (e) {
+        console.log("Error test 2:", e.message);
+    }
+
+    try {
+        collection.addShape({}); // Should throw error
+    } catch (e) {
+        console.log("Error test 3:", e.message);
+    }
+
+} catch (error) {
+    console.error("Test failed:", error.message);
+}

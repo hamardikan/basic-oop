@@ -1,155 +1,129 @@
-# #4 - Class Polymorphism
+# Shape Polymorphism Exercise
 ---
-## Objectives
+## Learning Objectives
 
-- Understand and implement polymorphic behavior
-- Create and use abstract base classes
-- Apply method overriding effectively
-- Handle different object types uniformly
-- Create flexible and extensible code
+By completing this exercise, you will:
+1. Understand how abstract classes work
+2. Practice implementing inheritance
+3. Learn to use method overriding
+4. Understand how polymorphism allows uniform handling of different objects
+5. Practice basic input validation and error handling
 
-### RESTRICTION
-- Function and method names must be exactly as specified
-- Cannot instantiate the Shape base class directly
-- Must implement all required methods in child classes
-- Cannot use instanceof for type checking
-- Must use proper method overriding
+## Important Concepts
 
-### HINTS
-- Base Shape class should be abstract
-- Use proper validation in each shape class
-- Consider edge cases for calculations
-- Think about how shapes can transform
-- Remember to handle floating point precision
+### Abstract Classes
+- An abstract class provides a common base for other classes
+- It cannot be instantiated directly (cannot create new Shape())
+- Contains methods that child classes must implement
+- May contain shared methods that all child classes can use
+
+### Inheritance
+- Child classes (Circle, Rectangle) extend the parent class (Shape)
+- Child classes must call super() in their constructor
+- Child classes inherit and can override parent methods
+
+### Polymorphism
+- Different shapes can be treated uniformly through their common Shape interface
+- Each shape implements the same methods (getArea, toString) in its own way
+- Collections can work with any shape without knowing its specific type
 
 ---
 
-## Directions
+## Step-by-Step Implementation Guide
 
-Help PolyGenius Studio create a flexible shape calculation system! The system needs to handle various geometric shapes while maintaining clean, reusable code through polymorphism.
-
-### Task 1: Create Abstract Shape Class
-
-Create a base `Shape` class that other shapes will extend:
+### 1. Complete the Shape Class
 
 ```javascript
 class Shape {
   constructor() {
-    if (this.constructor === Shape) {
-      throw new Error("Cannot instantiate abstract Shape class");
-    }
+    // TODO: Add code that prevents direct Shape instantiation
+    // HINT: Check if this.constructor is Shape
+    // If it is, throw new Error("Cannot create a Shape directly!")
   }
 
-  // Abstract methods that must be implemented
   getArea() {
-    throw new Error("getArea() must be implemented");
-  }
-
-  getPerimeter() {
-    throw new Error("getPerimeter() must be implemented");
+    // TODO: Make this an abstract method by throwing an error
+    // This forces child classes to implement their own getArea()
+    // throw new Error("getArea() must be implemented");
   }
 
   toString() {
-    throw new Error("toString() must be implemented");
-  }
-
-  // Concrete methods shared by all shapes
-  scale(factor) {
-    throw new Error("scale() must be implemented");
-  }
-
-  equals(shape) {
-    throw new Error("equals() must be implemented");
+    // TODO: Make this an abstract method by throwing an error
+    // This forces child classes to implement their own toString()
+    // throw new Error("toString() must be implemented");
   }
 }
 ```
 
-### Task 2: Implement Basic Shapes
+### 2. Implement Circle Class
 
-Create classes for basic shapes that extend the Shape class:
-
-1. Circle Class:
 ```javascript
 class Circle extends Shape {
   constructor(radius) {
-    // Validate and initialize radius
+    // TODO: 1. Call parent constructor using super()
+    // TODO: 2. Validate radius is a positive number
+    //         - if radius <= 0, throw new Error("Radius must be positive")
+    // TODO: 3. Initialize this.radius
+  }
+
+  getArea() {
+    // TODO: Implement area calculation for a circle
+    // Formula: π * radius * radius
+    // Use Math.PI for the value of π
+  }
+
+  toString() {
+    // TODO: Return a string in the format: "Circle with radius {radius}"
+    // Example: "Circle with radius 5"
   }
 }
 ```
 
-2. Rectangle Class:
+### 3. Implement Rectangle Class
+
 ```javascript
 class Rectangle extends Shape {
   constructor(width, height) {
-    // Validate and initialize dimensions
+    // TODO: 1. Call parent constructor using super()
+    // TODO: 2. Validate width and height are positive numbers
+    //         - if either <= 0, throw new Error("Width and height must be positive")
+    // TODO: 3. Initialize this.width and this.height
+  }
+
+  getArea() {
+    // TODO: Implement area calculation for a rectangle
+    // Formula: width * height
+  }
+
+  toString() {
+    // TODO: Return a string in the format: 
+    // "Rectangle with width {width} and height {height}"
+    // Example: "Rectangle with width 4 and height 6"
   }
 }
 ```
 
-3. Triangle Class:
-```javascript
-class Triangle extends Shape {
-  constructor(side1, side2, side3) {
-    // Validate and initialize sides
-    // Check if valid triangle
-  }
-}
-```
+### 4. Implement Square Class
 
-### Task 3: Implement Complex Shapes
-
-Create classes for more complex shapes:
-
-1. Square Class (extends Rectangle):
 ```javascript
 class Square extends Rectangle {
   constructor(side) {
-    // Use rectangle constructor properly
+    // TODO: Call Rectangle constructor with side for both width and height
+    // HINT: Use super(side, side)
   }
+
+  toString() {
+    // TODO: Override toString to return appropriate square description
+    // Format: "Square with side {side}"
+    // Example: "Square with side 5"
+    // HINT: You can access the side length using this.width or this.height
+  }
+
+  // Note: getArea() is inherited from Rectangle and works correctly!
 }
 ```
 
-2. RegularPolygon Class:
-```javascript
-class RegularPolygon extends Shape {
-  constructor(sides, sideLength) {
-    // Validate and create regular polygon
-    // Must have 3 or more sides
-  }
-}
-```
-
-### Task 4: Implement Shape Factory
-
-Create a factory class to handle shape creation:
-
-```javascript
-class ShapeFactory {
-  static createCircle(radius) {
-    // Create and return circle
-  }
-
-  static createRectangle(width, height) {
-    // Create and return rectangle
-  }
-
-  static createSquare(side) {
-    // Create and return square
-  }
-
-  static createTriangle(side1, side2, side3) {
-    // Create and return triangle
-  }
-
-  static createRegularPolygon(sides, sideLength) {
-    // Create and return regular polygon
-  }
-}
-```
-
-### Task 5: Implement Shape Container
-
-Create a container class to manage collections of shapes:
+### 5. Implement ShapeCollection Class
 
 ```javascript
 class ShapeCollection {
@@ -158,132 +132,107 @@ class ShapeCollection {
   }
 
   addShape(shape) {
-    // Add shape to collection
+    // TODO: 1. Verify shape is instance of Shape class
+    //         - use 'instanceof' operator
+    //         - if not, throw new Error("Can only add shapes!")
+    // TODO: 2. Add valid shape to this.shapes array
   }
 
   getTotalArea() {
-    // Calculate total area
+    // TODO: Calculate and return sum of all shapes' areas
+    // HINT: Use array reduce method to sum getArea() of each shape
   }
 
-  getTotalPerimeter() {
-    // Calculate total perimeter
-  }
-
-  getShapesByType(type) {
-    // Return shapes of specific type
-  }
-
-  scaleAllShapes(factor) {
-    // Scale all shapes by factor
-  }
-
-  toString() {
-    // Return string representation
+  printShapes() {
+    // TODO: Print information about each shape
+    // HINT: Use array forEach to call toString() on each shape
   }
 }
 ```
 
-### Example Test Cases
+## Testing Your Implementation
 
+### Basic Shape Creation
 ```javascript
-// Test Case 1: Creating Shapes
-const circle = ShapeFactory.createCircle(5);
-const rectangle = ShapeFactory.createRectangle(4, 6);
-const square = ShapeFactory.createSquare(4);
-const triangle = ShapeFactory.createTriangle(3, 4, 5);
-const pentagon = ShapeFactory.createRegularPolygon(5, 4);
+const circle = new Circle(5);
+const rectangle = new Rectangle(4, 6);
+const square = new Square(3);
 
-console.log(circle.toString()); // "Circle[radius=5]"
-console.log(rectangle.toString()); // "Rectangle[width=4, height=6]"
-console.log(square.toString()); // "Square[side=4]"
+// These should print the correct string representations
+console.log(circle.toString());    // "Circle with radius 5"
+console.log(rectangle.toString()); // "Rectangle with width 4 and height 6"
+console.log(square.toString());    // "Square with side 3"
+```
 
-// Test Case 2: Calculations
-console.log(circle.getArea()); // 78.54 (π * 5^2)
-console.log(rectangle.getPerimeter()); // 20 (2 * (4 + 6))
-console.log(triangle.getArea()); // 6 (Heron's formula)
-console.log(pentagon.getPerimeter()); // 20 (5 * 4)
+### Area Calculations
+```javascript
+// These should print the correct areas
+console.log(circle.getArea());    // ~78.54 (π * 5 * 5)
+console.log(rectangle.getArea()); // 24 (4 * 6)
+console.log(square.getArea());    // 9 (3 * 3)
+```
 
-// Test Case 3: Shape Collection
+### Collection Usage
+```javascript
 const collection = new ShapeCollection();
+
+// Adding shapes should work
 collection.addShape(circle);
 collection.addShape(rectangle);
 collection.addShape(square);
 
-console.log(collection.getTotalArea()); // Sum of all areas
-console.log(collection.getTotalPerimeter()); // Sum of all perimeters
+// Should print sum of all areas
+console.log("Total area: " + collection.getTotalArea());
 
-// Test Case 4: Scaling
-circle.scale(2);
-console.log(circle.toString()); // "Circle[radius=10]"
-console.log(circle.getArea()); // 314.16 (π * 10^2)
-
-// Test Case 5: Shape Equality
-const square1 = ShapeFactory.createSquare(5);
-const square2 = ShapeFactory.createSquare(5);
-const square3 = ShapeFactory.createSquare(6);
-
-console.log(square1.equals(square2)); // true
-console.log(square1.equals(square3)); // false
+// Should print information about each shape
+collection.printShapes();
 ```
 
-### Error Cases to Handle
-
-1. Invalid Shape Creation:
+### Error Cases
 ```javascript
-// Should throw error: "Radius must be positive"
-ShapeFactory.createCircle(-5);
+// These should all throw appropriate errors
+try {
+    new Shape();  // "Cannot create a Shape directly!"
+} catch (e) {
+    console.log(e.message);
+}
 
-// Should throw error: "Width and height must be positive"
-ShapeFactory.createRectangle(-4, 6);
+try {
+    new Circle(-5);  // "Radius must be positive"
+} catch (e) {
+    console.log(e.message);
+}
 
-// Should throw error: "Invalid triangle sides"
-ShapeFactory.createTriangle(1, 1, 3); // Triangle inequality
-
-// Should throw error: "Regular polygon must have 3 or more sides"
-ShapeFactory.createRegularPolygon(2, 5);
+try {
+    collection.addShape({});  // "Can only add shapes!"
+} catch (e) {
+    console.log(e.message);
+}
 ```
 
-2. Invalid Operations:
-```javascript
-// Should throw error: "Scale factor must be positive"
-circle.scale(-2);
+## Common Mistakes to Avoid
 
-// Should throw error: "Cannot add non-Shape object"
-collection.addShape({type: "circle", radius: 5});
+1. Forgetting to call super() in child class constructors
+2. Not validating input values in constructors
+3. Forgetting to throw errors for invalid inputs
+4. Not checking if an object is a Shape in addShape()
+5. Using incorrect format in toString() methods
+6. Not using proper floating-point numbers for circle calculations
 
-// Should throw error: "Cannot compare Shape with non-Shape"
-circle.equals({radius: 5});
-```
+## Tips for Success
 
-### Required Implementations
+1. Implement one class at a time and test it thoroughly
+2. Use the provided test cases to verify your implementation
+3. Make sure all error messages match exactly what's expected
+4. Test edge cases (0, negative numbers, invalid inputs)
+5. Remember that Square inherits getArea() from Rectangle
 
-1. Area Calculations:
-   - Circle: π * r²
-   - Rectangle: width * height
-   - Triangle: Heron's formula
-   - Regular Polygon: (n * s²)/(4 * tan(π/n))
+## Grading Criteria
 
-2. Perimeter Calculations:
-   - Circle: 2 * π * r
-   - Rectangle: 2 * (width + height)
-   - Triangle: sum of all sides
-   - Regular Polygon: sides * sideLength
-
-3. Scaling Rules:
-   - Circle: scales radius
-   - Rectangle: scales both dimensions
-   - Triangle: scales all sides
-   - Maintains shape proportions
-
-4. Equality Rules:
-   - Same shape type
-   - Same dimensions
-   - Allow small floating-point differences
-
-### Notes:
-- Use Math.PI for π calculations
-- Round results to 2 decimal places
-- Use proper floating-point comparison
-- Implement proper validation for all inputs
-- Maintain immutability where appropriate
-- Use descriptive error messages
+Your implementation will be tested for:
+1. Correct class hierarchy and inheritance
+2. Proper input validation and error handling
+3. Accurate area calculations
+4. Correct string representations
+5. Proper collection management
+6. Handling of error cases
